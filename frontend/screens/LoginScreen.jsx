@@ -61,8 +61,8 @@ function LoginScreen({ navigation }) {
     password: touched.password
       ? !password
         ? "password is required"
-        : password.length < 5
-        ? "password must be at least 5 characters"
+        : password.length < 6
+        ? "password must be at least 6 characters"
         : ""
       : "",
   };
@@ -93,6 +93,7 @@ function LoginScreen({ navigation }) {
           password,
         });
         if (response.data.success) {
+          setLoggingIn(false);
           await AsyncStorage.setItem("userToken", response.data.token);
           await AsyncStorage.setItem(
             "userData",

@@ -42,8 +42,6 @@ module.exports.getCandidates = asyncHandler(async (req, res, next) => {
     return { ...candidate._doc, votes: votesForCandidate };
   });
 
-  console.log(candidatesWithVotes);
-
   if (candidates) {
     return res.status(200).json({
       success: true,

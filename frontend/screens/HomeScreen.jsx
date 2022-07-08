@@ -130,21 +130,39 @@ const HomeScreen = ({ navigation }) => {
           : "You can only vote for one candidate"}
       </Text>
       {isAdmin && (
-        <TouchableOpacity
-          style={{
-            backgroundColor: "#2E0B5B",
-            width: 150,
-            height: 40,
-            borderRadius: 5,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 10,
-          }}
-          onPress={() => navigation.navigate("RegisterCandidate")}
-        >
-          <Text style={{ color: "#fff" }}>Add Candidate</Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#2E0B5B",
+              width: 150,
+              height: 40,
+              borderRadius: 5,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 10,
+            }}
+            onPress={() => navigation.navigate("RegisterCandidate")}
+          >
+            <Text style={{ color: "#fff" }}>Add Candidate</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#2E0B5B",
+              width: 150,
+              height: 40,
+              borderRadius: 5,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 10,
+              marginLeft: 20,
+            }}
+            onPress={() => setreload(!reload)}
+          >
+            <Text style={{ color: "#fff" }}>Reload Data</Text>
+          </TouchableOpacity>
+        </View>
       )}
       <View>
         {candidates.map((candidate, index) => {
