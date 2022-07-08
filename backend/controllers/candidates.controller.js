@@ -36,9 +36,9 @@ module.exports.getCandidates = asyncHandler(async (req, res, next) => {
   const candidates = await Candidate.find();
   const votes = (await Vote.find()) || [];
   const candidatesWithVotes = candidates?.map((candidate) => {
-    const votesForCandidate = votes.filter(
-      (vote) => vote.candidate.toString() === candidate._id.toString()
-    );
+    const votesForCandidate = votes
+      .filter((vote) => vote.candidate.toString() === candidate._id.toString())
+      .map((vote) => vote.voter.toString());
     return { ...candidate._doc, votes: votesForCandidate };
   });
 

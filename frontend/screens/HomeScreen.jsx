@@ -77,6 +77,11 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const { isAdmin } = user.user || {};
+
+  const hasVoted =
+    candidates.find((candidate) => {
+      return candidate.votes.includes(user.user?._id);
+    }) !== null;
   return (
     <ScrollView style={styles.container}>
       <View
@@ -165,7 +170,7 @@ const HomeScreen = ({ navigation }) => {
                   {candidate.gender}
                 </Text>
               </View>
-              {!isAdmin ? (
+              {!isAdmin && !hasVoted ? (
                 <TouchableOpacity
                   style={{
                     position: "absolute",

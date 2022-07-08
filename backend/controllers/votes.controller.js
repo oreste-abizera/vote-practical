@@ -8,19 +8,26 @@ module.exports.addVote = asyncHandler(async (req, res, next) => {
   const { candidate } = req.params;
   const voter = req.user._id;
 
-  const voterFound = User.findOne({ _id: voter, isAdmin: false });
+  const voterFound = await User.findOne({ _id: voter, isAdmin: false });
   if (!voterFound) {
     return next(new ErrorResponse("Voter Not Found", 404));
   }
 
-  const candidateFound = Candidate.findById(candidate);
+  const candidateFound = await Candidate.findById(candidate);
   if (!candidateFound) {
     return next(new ErrorResponse("No candidate Found", 404));
   }
 
-  const alreadyVoted = Vote.findOne({ candidate, voter });
+  const alreadyVoted = await Vote.findOne({ voter });
   if (alreadyVoted) {
-    return next(new ErrorResponse("You already voted this candidate", 400));
+    return next(
+      new ErrorResponse(
+        candidate === alreadyVoted.candidate?.toString()
+          ? "You already voted this candidate"
+          : "You have already voted another candidate",
+        400
+      )
+    );
   }
 
   const vote = await Vote.create({
@@ -33,7 +40,7 @@ module.exports.addVote = asyncHandler(async (req, res, next) => {
       data: vote,
     });
   } else {
-    return next(new ErrorResponse("Vote not created", 500));
+    return next(new ErrorResponse("voting this candidate failed", 500));
   }
 });
 
