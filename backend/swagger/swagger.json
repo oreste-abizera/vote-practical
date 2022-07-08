@@ -115,53 +115,10 @@
           ]
         }
       },
-      "/api/v1/posts/add": {
-        "post": {
-          "tags": [
-            "Posts"
-          ],
-          "summary": "",
-          "description": "",
-          "parameters": [
-            {
-              "in": "body",
-              "name": "body",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/Post"
-              }
-            }
-          ],
-          "consumes": [
-            "application/json"
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "201": {
-              "description": "Created",
-              "schema": {
-                "$ref": "#/definitions/Post"
-              }
-            },
-            "500": {
-              "description": "Internal Server Error"
-            }
-          },
-          "security": [
-            {
-              "Bearer": [
-                "global"
-              ]
-            }
-          ]
-        }
-      },
-      "/api/v1/posts": {
+      "/api/v1/candidates": {
         "get": {
           "tags": [
-            "Posts"
+            "Candidate"
           ],
           "summary": "",
           "description": "",
@@ -178,7 +135,7 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/definitions/Post"
+                  "$ref": "#/definitions/Candidate"
                 }
               }
             },
@@ -204,26 +161,20 @@
           ]
         }
       },
-      "/api/v1/posts/{postId}/like": {
+      "/api/v1/candidates/register": {
         "post": {
           "tags": [
-            "Posts"
+            "Candidate"
           ],
           "summary": "",
           "description": "",
           "parameters": [
             {
-              "in": "path",
-              "name": "postId",
-              "required": true,
-              "type": "string"
-            },
-            {
               "in": "body",
               "name": "body",
               "required": true,
               "schema": {
-                "$ref": "#/definitions/Post"
+                "$ref": "#/definitions/Candidate"
               }
             }
           ],
@@ -237,205 +188,7 @@
             "201": {
               "description": "Created",
               "schema": {
-                "$ref": "#/definitions/Post"
-              }
-            },
-            "500": {
-              "description": "Internal Server Error"
-            }
-          },
-          "security": [
-            {
-              "Bearer": [
-                "global"
-              ]
-            }
-          ]
-        }
-      },
-      "/api/v1/posts/{postId}/dislike": {
-        "post": {
-          "tags": [
-            "Posts"
-          ],
-          "summary": "",
-          "description": "",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "postId",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "in": "body",
-              "name": "body",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/Post"
-              }
-            }
-          ],
-          "consumes": [
-            "application/json"
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "201": {
-              "description": "Created",
-              "schema": {
-                "$ref": "#/definitions/Post"
-              }
-            },
-            "500": {
-              "description": "Internal Server Error"
-            }
-          },
-          "security": [
-            {
-              "Bearer": [
-                "global"
-              ]
-            }
-          ]
-        }
-      },
-      "/api/v1/posts/{postId}": {
-        "get": {
-          "tags": [
-            "Posts"
-          ],
-          "summary": "",
-          "description": "",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "postId",
-              "required": true,
-              "type": "string"
-            }
-          ],
-          "consumes": [
-            "application/json"
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "OK",
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/Post"
-                }
-              }
-            },
-            "500": {
-              "description": "Internal Server Error",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "error": {
-                    "type": "string",
-                    "example": "Internal Server Error"
-                  }
-                }
-              }
-            }
-          },
-          "security": [
-            {
-              "Bearer": [
-                "global"
-              ]
-            }
-          ]
-        }
-      },
-      "/api/v1/posts/{postId}/update": {
-        "put": {
-          "tags": [
-            "Posts"
-          ],
-          "summary": "",
-          "description": "",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "postId",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "in": "body",
-              "name": "body",
-              "required": false,
-              "schema": {
-                "$ref": "#/definitions/Post"
-              }
-            }
-          ],
-          "consumes": [
-            "application/json"
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "201": {
-              "description": "Created",
-              "schema": {
-                "$ref": "#/definitions/Post"
-              }
-            },
-            "500": {
-              "description": "Internal Server Error"
-            }
-          },
-          "security": [
-            {
-              "Bearer": [
-                "global"
-              ]
-            }
-          ]
-        }
-      },
-      "/api/v1/posts/{postId}/delete": {
-        "delete": {
-          "tags": [
-            "Posts"
-          ],
-          "summary": "",
-          "description": "",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "postId",
-              "required": true,
-              "type": "string"
-            }
-          ],
-          "consumes": [
-            "application/json"
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "OK",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "deleted": {
-                    "type": "boolean",
-                    "example": true
-                  }
-                }
+                "$ref": "#/definitions/Candidate"
               }
             },
             "500": {
@@ -491,24 +244,28 @@
           }
         }
       },
-      "Post": {
+      "Candidate": {
         "type": "object",
         "properties": {
-          "title": {
+          "names": {
             "type": "string",
             "example": "string"
           },
-          "content": {
+          "profilePicture": {
             "type": "string",
             "example": "string"
           },
-          "author": {
+          "missionStatement": {
             "type": "string",
-            "example": "507f1f77bcf86cd799439011",
-            "required": true
+            "example": "string"
           },
-          "likes": {
-            "type": "array"
+          "nationalId": {
+            "type": "string",
+            "example": "string"
+          },
+          "gender": {
+            "type": "string",
+            "example": "string"
           },
           "_id": {
             "type": "string",
