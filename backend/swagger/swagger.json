@@ -204,10 +204,10 @@
           ]
         }
       },
-      "/api/v1/candidates/candidate/{candidate}": {
+      "/api/v1/votes/candidate/{candidate}": {
         "post": {
           "tags": [
-            "Candidate"
+            "Vote"
           ],
           "summary": "",
           "description": "",
@@ -223,7 +223,7 @@
               "name": "body",
               "required": true,
               "schema": {
-                "$ref": "#/definitions/Candidate"
+                "$ref": "#/definitions/vote"
               }
             }
           ],
@@ -237,7 +237,7 @@
             "201": {
               "description": "Created",
               "schema": {
-                "$ref": "#/definitions/Candidate"
+                "$ref": "#/definitions/vote"
               }
             },
             "500": {
@@ -253,10 +253,56 @@
           ]
         }
       },
-      "/api/v1/candidates/{candidate}": {
+      "/api/v1/votes": {
         "get": {
           "tags": [
-            "Candidate"
+            "Vote"
+          ],
+          "summary": "",
+          "description": "",
+          "parameters": [],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/vote"
+                }
+              }
+            },
+            "500": {
+              "description": "Internal Server Error",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "type": "string",
+                    "example": "Internal Server Error"
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "Bearer": [
+                "global"
+              ]
+            }
+          ]
+        }
+      },
+      "/api/v1/votes/{candidate}": {
+        "get": {
+          "tags": [
+            "Vote"
           ],
           "summary": "",
           "description": "",
@@ -280,7 +326,7 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/definitions/Candidate"
+                  "$ref": "#/definitions/vote"
                 }
               }
             },
@@ -396,11 +442,11 @@
           },
           "updatedAt": {
             "type": "string",
-            "example": "7/8/2022, 11:47:03 AM"
+            "example": "7/8/2022, 12:41:45 PM"
           },
           "createdAt": {
             "type": "string",
-            "example": "7/8/2022, 11:47:03 AM"
+            "example": "7/8/2022, 12:41:45 PM"
           }
         }
       }

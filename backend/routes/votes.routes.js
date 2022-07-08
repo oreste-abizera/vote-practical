@@ -14,9 +14,9 @@ router.get("/", getVotes);
 router.get("/:candidate", getCandidateVotes);
 
 registerDefinition(router, {
-  tags: "Candidate",
-  mappedSchema: "Candidate",
-  basePath: "/api/v1/candidates",
+  tags: "Vote",
+  mappedSchema: "vote",
+  basePath: "/api/v1/votes",
 });
 
 module.exports = router;

@@ -26,7 +26,6 @@ const RadioFilter = ({ options = [], changeSelected }) => {
               selected={selected === option}
               onPress={() => {
                 setselected(option);
-                console.log(selected === option, selected, option);
               }}
             />
             <Text

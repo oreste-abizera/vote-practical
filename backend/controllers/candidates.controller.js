@@ -1,5 +1,6 @@
 const asyncHandler = require("../middleware/async");
 const Candidate = require("../models/Candidate");
+const Vote = require("../models/Vote.model");
 const ErrorResponse = require("../utils/errorResponse");
 
 module.exports.registerCandidate = asyncHandler(async (req, res, next) => {
@@ -33,10 +34,20 @@ module.exports.registerCandidate = asyncHandler(async (req, res, next) => {
 
 module.exports.getCandidates = asyncHandler(async (req, res, next) => {
   const candidates = await Candidate.find();
+  const votes = (await Vote.find()) || [];
+  const candidatesWithVotes = candidates?.map((candidate) => {
+    const votesForCandidate = votes.filter(
+      (vote) => vote.candidate.toString() === candidate._id.toString()
+    );
+    return { ...candidate._doc, votes: votesForCandidate };
+  });
+
+  console.log(candidatesWithVotes);
+
   if (candidates) {
     return res.status(200).json({
       success: true,
-      data: candidates,
+      data: candidatesWithVotes,
     });
   } else {
     return next(new ErrorResponse("No candidates found", 404));

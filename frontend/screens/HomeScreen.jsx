@@ -8,11 +8,13 @@ import {
   StyleSheet,
   Text,
   ToastAndroid,
+  TouchableHighlight,
   TouchableOpacity,
   View,
 } from "react-native";
 import checkAsyncStorage from "../helpers/CheckAsyncStorage";
 import url from "../helpers/url";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeScreen = ({ navigation }) => {
   const [reload, setreload] = useState(false);
@@ -29,7 +31,7 @@ const HomeScreen = ({ navigation }) => {
         setuser(user);
       }
     }, []);
-  }, []);
+  }, [reload]);
 
   const voteCandidate = async (candidate = {}) => {
     try {
@@ -50,6 +52,7 @@ const HomeScreen = ({ navigation }) => {
         } else {
           Alert.alert("Vote Successfully Registered");
         }
+        setreload(!reload);
       } else {
         Alert.alert(
           "Vote Registration failed",
@@ -68,11 +71,76 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
+  const logout = async () => {
+    await AsyncStorage.clear();
+    navigation.navigate("Login");
+  };
+
   const { isAdmin } = user.user || {};
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>Your Vote is Secure, Your Vote Count</Text>
-      <Text style={styles.subtitle}>You can only vote for one candidate</Text>
+      <View
+        style={{
+          marginBottom: 40,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <View>
+          <Text style={{ fontSize: 16, color: "gray" }}>
+            Hello,{" "}
+            <Text style={{ fontWeight: "700", color: "black" }}>
+              {user.user?.names || "There"}
+            </Text>
+          </Text>
+          <Text style={{ color: "gray", marginTop: 2 }}>
+            {isAdmin ? "Administrator" : "Voter"}
+          </Text>
+        </View>
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#2E0B5B",
+            width: 80,
+            height: 40,
+            borderRadius: 5,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onPress={logout}
+        >
+          <Text style={{ color: "#fff" }}>Logout</Text>
+        </TouchableOpacity>
+      </View>
+
+      <Text style={styles.title}>
+        {isAdmin
+          ? "List of Candidates and their votes"
+          : "Your Vote is Secure, Your Vote Count"}
+      </Text>
+      <Text style={styles.subtitle}>
+        {isAdmin
+          ? "You can add more candidates"
+          : "You can only vote for one candidate"}
+      </Text>
+      {isAdmin && (
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#2E0B5B",
+            width: 150,
+            height: 40,
+            borderRadius: 5,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 10,
+          }}
+          onPress={() => navigation.navigate("RegisterCandidate")}
+        >
+          <Text style={{ color: "#fff" }}>Add Candidate</Text>
+        </TouchableOpacity>
+      )}
       <View>
         {candidates.map((candidate, index) => {
           return (
@@ -119,7 +187,7 @@ const HomeScreen = ({ navigation }) => {
                   </Text>
                 </TouchableOpacity>
               ) : (
-                <TouchableOpacity
+                <TouchableHighlight
                   style={{
                     position: "absolute",
                     right: 0,
@@ -134,8 +202,10 @@ const HomeScreen = ({ navigation }) => {
                     alignItems: "center",
                   }}
                 >
-                  <Text style={{ color: "#fff" }}>10 votes</Text>
-                </TouchableOpacity>
+                  <Text style={{ color: "#fff" }}>
+                    {candidate.votes?.length || 0} votes
+                  </Text>
+                </TouchableHighlight>
               )}
             </View>
           );
