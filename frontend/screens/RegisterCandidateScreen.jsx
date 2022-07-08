@@ -55,6 +55,7 @@ const RegisterCandidateScreen = ({ navigation }) => {
           "Candidate Registration failed",
           "Please check your internet connection and try again"
         );
+        setCreating(false);
       }
     } catch (error) {
       console.log(error.message || error.response?.data);
@@ -62,7 +63,6 @@ const RegisterCandidateScreen = ({ navigation }) => {
         "Error",
         error?.response?.data?.error || "Something went wrong"
       );
-    } finally {
       setCreating(false);
     }
   };

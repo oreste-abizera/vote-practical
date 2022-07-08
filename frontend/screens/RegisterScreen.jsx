@@ -200,6 +200,7 @@ function RegisterScreen({ navigation }) {
               "Registration failed",
               "Please check your internet connection and try again"
             );
+            setLoggingIn(false);
           }
         } catch (error) {
           console.log(error.message || error.response?.data);
@@ -207,7 +208,6 @@ function RegisterScreen({ navigation }) {
             "Error",
             error?.response?.data?.error || "Something went wrong"
           );
-        } finally {
           setLoggingIn(false);
         }
       }

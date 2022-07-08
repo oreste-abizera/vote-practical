@@ -9,6 +9,8 @@ import {
   ScrollView,
   Dimensions,
   Alert,
+  Platform,
+  ToastAndroid,
 } from "react-native";
 import validateEmail from "../helpers/validateEmail";
 import axios from "axios";
@@ -97,8 +99,14 @@ function LoginScreen({ navigation }) {
             JSON.stringify(response.data.data)
           );
           navigation.navigate("Home");
+          if (Platform.OS === "android") {
+            ToastAndroid.show("Successfully Logged In", ToastAndroid.SHORT);
+          } else {
+            Alert.alert("Successfully Logged In");
+          }
         } else {
           Alert.alert("Login failed", "Please check your credentials");
+          setLoggingIn(false);
         }
       } catch (error) {
         console.log(error.message || error.response);
@@ -106,7 +114,6 @@ function LoginScreen({ navigation }) {
           "Error",
           error?.response?.data?.error || "Something went wrong"
         );
-      } finally {
         setLoggingIn(false);
       }
     } else {
