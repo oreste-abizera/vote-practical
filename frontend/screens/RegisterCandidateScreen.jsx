@@ -41,6 +41,7 @@ const RegisterCandidateScreen = ({ navigation }) => {
         ...state,
       });
       if (response.data.success) {
+        setCreating(false);
         navigation.navigate("Home");
         if (Platform.OS === "android") {
           ToastAndroid.show(

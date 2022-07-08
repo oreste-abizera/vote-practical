@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-const VoteScreen = ({ navigation, route }) => {
+const VoteSuccessScreen = ({ navigation, route }) => {
   const { candidate = {} } = route.params;
   return (
     <View style={styles.container}>
@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VoteScreen;
+export default VoteSuccessScreen;
