@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Vote">
+      <Stack.Navigator initialRouteName="Register">
         <Stack.Screen
           name="Splash"
           component={SplashScreen}
@@ -38,9 +38,10 @@ export default function App() {
         <Stack.Screen
           name="RegisterCandidate"
           component={RegisterCandidateScreen}
+          options={{ headerShadowVisible: false, title: "" }}
         />
         <Stack.Screen
-          name="Vote"
+          name="VoteSuccess"
           component={VoteScreen}
           options={{ headerShown: false }}
         ></Stack.Screen>

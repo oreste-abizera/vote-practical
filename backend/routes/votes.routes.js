@@ -5,10 +5,11 @@ const {
   getVotes,
   getCandidateVotes,
 } = require("../controllers/votes.controller");
+const { protect } = require("../middleware/auth");
 
 const router = express.Router();
 
-router.post("/", addVote);
+router.post("/candidate/:candidate", protect, addVote);
 router.get("/", getVotes);
 router.get("/:candidate", getCandidateVotes);
 

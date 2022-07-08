@@ -237,11 +237,11 @@ function RegisterScreen({ navigation }) {
               <Text style={styles.error}>{errors.names}</Text>
             ) : null}
 
-            <Text style={styles.inputLabel}>nationalId</Text>
+            <Text style={styles.inputLabel}>National ID</Text>
             <View style={[styles.inputContainer, nationalIdErrorStyles]}>
               <TextInput
                 style={styles.input}
-                placeholder="Enter Your nationalId"
+                placeholder="Enter Your national Id"
                 value={nationalId}
                 onChangeText={(value) => changeState("nationalId", value)}
                 onBlur={() => touchInput("nationalId")}

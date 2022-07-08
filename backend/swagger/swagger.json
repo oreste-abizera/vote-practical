@@ -159,7 +159,9 @@
               ]
             }
           ]
-        },
+        }
+      },
+      "/api/v1/candidates/register": {
         "post": {
           "tags": [
             "Candidate"
@@ -202,7 +204,7 @@
           ]
         }
       },
-      "/api/v1/candidates/register": {
+      "/api/v1/candidates/candidate/{candidate}": {
         "post": {
           "tags": [
             "Candidate"
@@ -210,6 +212,12 @@
           "summary": "",
           "description": "",
           "parameters": [
+            {
+              "in": "path",
+              "name": "candidate",
+              "required": true,
+              "type": "string"
+            },
             {
               "in": "body",
               "name": "body",
@@ -388,11 +396,11 @@
           },
           "updatedAt": {
             "type": "string",
-            "example": "7/8/2022, 10:16:54 AM"
+            "example": "7/8/2022, 11:47:03 AM"
           },
           "createdAt": {
             "type": "string",
-            "example": "7/8/2022, 10:16:55 AM"
+            "example": "7/8/2022, 11:47:03 AM"
           }
         }
       }

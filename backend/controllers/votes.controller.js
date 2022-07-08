@@ -5,7 +5,8 @@ const Vote = require("../models/Vote.model");
 const ErrorResponse = require("../utils/errorResponse");
 
 module.exports.addVote = asyncHandler(async (req, res, next) => {
-  const { candidate, voter } = req.body;
+  const { candidate } = req.params;
+  const voter = req.user._id;
 
   const voterFound = User.findOne({ _id: voter, isAdmin: false });
   if (!voterFound) {
