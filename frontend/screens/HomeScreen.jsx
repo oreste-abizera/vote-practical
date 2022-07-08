@@ -31,6 +31,8 @@ const HomeScreen = ({ navigation }) => {
     checkAsyncStorage().then((user) => {
       if (user.token) {
         setuser(user);
+      } else {
+        navigation.navigate("Login");
       }
     }, []);
   }, [reload]);
@@ -196,7 +198,9 @@ const HomeScreen = ({ navigation }) => {
                 }
               >
                 <>
-                  <Text style={{ fontSize: 30 }}>{candidate.names}</Text>
+                  <Text style={{ fontSize: 26, marginBottom: 8 }}>
+                    {candidate.names}
+                  </Text>
                   <Text style={{ fontSize: 14, color: "gray" }}>
                     {candidate.gender}
                   </Text>
@@ -257,7 +261,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     position: "relative",
-    paddingTop: 30,
+    paddingTop: 40,
     paddingHorizontal: 10,
   },
   title: {
@@ -275,7 +279,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#2E0B5B",
     height: 120,
-    marginVertical: 20,
+    marginVertical: 10,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",

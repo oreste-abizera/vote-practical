@@ -1,25 +1,7 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function SplashScreen({ navigation }) {
-  const [loadingState, setloadingState] = React.useState(0);
-
-  let numDots = 3;
-  React.useEffect(() => {
-    const interval = setInterval(async () => {
-      if (loadingState < numDots) await setloadingState(loadingState + 1);
-    }, 1000);
-
-    if (loadingState >= numDots) {
-      clearInterval(interval);
-      navigation.push("Register");
-    }
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [loadingState]);
-
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -33,13 +15,25 @@ export default function SplashScreen({ navigation }) {
             navigation.push("Home");
           }}
         >
-          ABStore
+          Voting Made Easy
         </Text>
-      </View>
-      <View style={styles.ellipses}>
-        {Array.from(Array(loadingState)).map((item, index) => (
-          <Text key={index} style={styles.ellipse}></Text>
-        ))}
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#2E0B5B",
+            width: 200,
+            height: 50,
+            borderRadius: 5,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 40,
+          }}
+          onPress={() => {
+            navigation.navigate("Home");
+          }}
+        >
+          <Text style={{ color: "#fff" }}>GET STARTED</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -50,7 +44,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#2E0B5B",
+    backgroundColor: "#fff",
     position: "relative",
   },
   content: {
@@ -59,26 +53,13 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: 250,
-    height: 250,
+    height: 400,
   },
   name: {
     fontWeight: "bold",
-    color: "#ffffff",
+    color: "#2E0B5B",
     fontSize: 35,
     marginTop: 25,
     letterSpacing: 1.5,
-  },
-  ellipses: {
-    position: "absolute",
-    bottom: 45,
-    display: "flex",
-    flexDirection: "row",
-  },
-  ellipse: {
-    height: 15,
-    width: 15,
-    marginHorizontal: 10,
-    borderRadius: 15,
-    backgroundColor: "#ffffff",
   },
 });
