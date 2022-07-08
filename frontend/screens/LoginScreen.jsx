@@ -13,17 +13,18 @@ import {
 import validateEmail from "../helpers/validateEmail";
 import axios from "axios";
 import url from "../helpers/url";
-// import checkAsyncStorage from "../helpers/CheckAsyncStorage";
+import checkAsyncStorage from "../helpers/CheckAsyncStorage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 let height = Dimensions.get("screen").height;
 
 function LoginScreen({ navigation }) {
   const [loggingIn, setLoggingIn] = React.useState(false);
   const bootstrapAsync = async () => {
-    // const userStorage = await checkAsyncStorage();
-    // if (userStorage.token) {
-    //   navigation.navigate(userStorage.token ? "Home" : "Login", {});
-    // }
+    const userStorage = await checkAsyncStorage();
+    if (userStorage.token) {
+      navigation.navigate(userStorage.token ? "Home" : "Login", {});
+    }
   };
 
   React.useEffect(() => {
@@ -90,13 +91,17 @@ function LoginScreen({ navigation }) {
           password,
         });
         if (response.data.success) {
-          //   login(response.data.token);
+          await AsyncStorage.setItem("userToken", response.data.token);
+          await AsyncStorage.setItem(
+            "userData",
+            JSON.stringify(response.data.data)
+          );
           navigation.navigate("Home");
         } else {
           Alert.alert("Login failed", "Please check your credentials");
         }
       } catch (error) {
-        console.log(error.response);
+        console.log(error.message || error.response);
         Alert.alert(
           "Error",
           error?.response?.data?.error || "Something went wrong"
