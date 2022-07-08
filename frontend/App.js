@@ -6,13 +6,15 @@ import SplashScreen from "./screens/SplashScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import HomeScreen from "./screens/HomeScreen";
+import RegisterCandidateScreen from "./screens/RegisterCandidateScreen";
+import VoteScreen from "./screens/VoteScreen";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Register">
+      <Stack.Navigator initialRouteName="Vote">
         <Stack.Screen
           name="Splash"
           component={SplashScreen}
@@ -33,6 +35,15 @@ export default function App() {
           component={HomeScreen}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="RegisterCandidate"
+          component={RegisterCandidateScreen}
+        />
+        <Stack.Screen
+          name="Vote"
+          component={VoteScreen}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

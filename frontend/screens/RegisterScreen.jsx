@@ -12,6 +12,7 @@ import {
   ToastAndroid,
   Platform,
 } from "react-native";
+import checkAsyncStorage from "../helpers/CheckAsyncStorage";
 import url from "../helpers/url";
 import validateEmail from "../helpers/validateEmail";
 
@@ -20,10 +21,10 @@ const { width, height } = Dimensions.get("window");
 function RegisterScreen({ navigation }) {
   const [loggingIn, setLoggingIn] = React.useState(false);
   const bootstrapAsync = async () => {
-    // const userStorage = await checkAsyncStorage();
-    // if (userStorage.token) {
-    //   navigation.navigate(userStorage.token ? "Home" : "Register", {});
-    // }
+    const userStorage = await checkAsyncStorage();
+    if (userStorage.token) {
+      navigation.navigate(userStorage.token ? "Home" : "Register", {});
+    }
   };
 
   React.useEffect(() => {
