@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import validateEmail from "../helpers/validateEmail";
 import axios from "axios";
+import url from "../helpers/url";
 // import checkAsyncStorage from "../helpers/CheckAsyncStorage";
 
 let height = Dimensions.get("screen").height;
@@ -84,14 +85,11 @@ function LoginScreen({ navigation }) {
       const { password, email } = state;
       try {
         setLoggingIn(true);
-        let response = await axios.post(
-          "http://10.0.2.2:8000/api/v1/auth/login",
-          {
-            email,
-            password,
-          }
-        );
-        if (response.status === 200) {
+        let response = await axios.post(url + "/auth/login", {
+          email,
+          password,
+        });
+        if (response.data.success) {
           //   login(response.data.token);
           navigation.navigate("Home");
         } else {

@@ -17,6 +17,11 @@ module.exports.addVote = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse("No candidate Found", 404));
   }
 
+  const alreadyVoted = Vote.findOne({ candidate, voter });
+  if (alreadyVoted) {
+    return next(new ErrorResponse("You already voted this candidate", 400));
+  }
+
   const vote = await Vote.create({
     candidate,
     voter,

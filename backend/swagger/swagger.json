@@ -388,11 +388,11 @@
           },
           "updatedAt": {
             "type": "string",
-            "example": "7/8/2022, 9:22:44 AM"
+            "example": "7/8/2022, 9:29:25 AM"
           },
           "createdAt": {
             "type": "string",
-            "example": "7/8/2022, 9:22:44 AM"
+            "example": "7/8/2022, 9:29:25 AM"
           }
         }
       }

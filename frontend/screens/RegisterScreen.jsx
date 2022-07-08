@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import {
   View,
@@ -8,7 +9,10 @@ import {
   ScrollView,
   Alert,
   Dimensions,
+  ToastAndroid,
+  Platform,
 } from "react-native";
+import url from "../helpers/url";
 import validateEmail from "../helpers/validateEmail";
 
 const { width, height } = Dimensions.get("window");
@@ -28,24 +32,33 @@ function RegisterScreen({ navigation }) {
 
   const [firstPage, setfirstPage] = React.useState(true);
   const [state, setstate] = React.useState({
-    fullname: "",
-    username: "",
+    names: "",
+    nationalId: "",
     email: "",
     password: "",
     confirmPassword: "",
     phone_number: "",
+    address: "",
   });
   const [touched, settouched] = React.useState({
-    fullname: false,
-    username: false,
+    names: false,
+    nationalId: false,
     email: false,
     password: false,
     confirmPassword: false,
     phone_number: false,
+    address: false,
   });
 
-  const { fullname, username, email, phone_number, password, confirmPassword } =
-    state;
+  const {
+    names,
+    nationalId,
+    email,
+    phone_number,
+    address,
+    password,
+    confirmPassword,
+  } = state;
 
   const changeState = (key, value) => {
     setstate({ ...state, [key]: value });
@@ -57,18 +70,18 @@ function RegisterScreen({ navigation }) {
   };
 
   const errors = {
-    fullname: touched.fullname
-      ? !fullname
+    names: touched.names
+      ? !names
         ? "Full Names are required"
-        : fullname.length < 2
+        : names.length < 2
         ? "Full Names must be at least 2 characters"
         : ""
       : "",
-    username: touched.username
-      ? !username
-        ? "username is required"
-        : username.length < 2
-        ? "Username must be at least 2 characters"
+    nationalId: touched.nationalId
+      ? !nationalId
+        ? "nationalId is required"
+        : nationalId.length != 16
+        ? "national id must be 16 characters"
         : ""
       : "",
     email: touched.email
@@ -81,17 +94,24 @@ function RegisterScreen({ navigation }) {
     phone_number: touched.phone_number
       ? !phone_number
         ? "Phone Number is required"
-        : phone_number.length !== 12
-        ? "Phone Number must be 12 characters"
-        : phone_number.match(/\d/g)?.length !== 12
+        : phone_number.length !== 10
+        ? "Phone Number must be 10 characters"
+        : phone_number.match(/\d/g)?.length !== 10
         ? "Phone Number is Invalid"
         : ""
       : "",
     password: touched.password
       ? !password
         ? "password is required"
-        : password.length < 5
-        ? "password must be at least 5 characters"
+        : password.length < 6
+        ? "password must be at least 6 characters"
+        : ""
+      : "",
+    address: touched.address
+      ? !address
+        ? "Address is required"
+        : address.length < 3
+        ? "Address must be at least 3 characters"
         : ""
       : "",
     confirmPassword: touched.confirmPassword
@@ -99,22 +119,23 @@ function RegisterScreen({ navigation }) {
         ? "confirm password is required"
         : password !== confirmPassword
         ? "Your Passwords do not match"
-        : confirmPassword.length < 5
-        ? "confirm password must be at least 5 characters"
+        : confirmPassword.length < 6
+        ? "confirm password must be at least 6 characters"
         : ""
       : "",
   };
 
   const isFirstPageComplete =
-    fullname.length >= 2 &&
-    username.length >= 2 &&
+    names.length >= 2 &&
+    nationalId.length == 16 &&
     validateEmail(email) &&
-    phone_number.length === 12 &&
-    phone_number.match(/\d/g)?.length === 12;
+    phone_number.length === 10 &&
+    phone_number.match(/\d/g)?.length === 10;
 
   const isSecondPageComplete =
-    password.length >= 5 &&
-    confirmPassword.length >= 5 &&
+    address.length > 3 &&
+    password.length >= 6 &&
+    confirmPassword.length >= 6 &&
     password === confirmPassword;
 
   const isEnabledSubmit =
@@ -123,16 +144,18 @@ function RegisterScreen({ navigation }) {
       ? isFirstPageComplete
       : isFirstPageComplete && isSecondPageComplete);
 
-  const fullnameErrorStyles =
-    touched.fullname && errors.fullname ? styles.inputContainerError : {};
-  const usernameErrorStyles =
-    touched.username && errors.username ? styles.inputContainerError : {};
+  const namesErrorStyles =
+    touched.names && errors.names ? styles.inputContainerError : {};
+  const nationalIdErrorStyles =
+    touched.nationalId && errors.nationalId ? styles.inputContainerError : {};
   const emailErrorStyles =
     touched.email && errors.email ? styles.inputContainerError : {};
   const phone_numberErrorStyles =
     touched.phone_number && errors.phone_number
       ? styles.inputContainerError
       : {};
+  const addressErrorStyles =
+    touched.address && errors.address ? styles.inputContainerError : {};
   const passwordErrorStyles =
     touched.password && errors.password ? styles.inputContainerError : {};
   const confirmPasswordErrorStyles =
@@ -144,7 +167,7 @@ function RegisterScreen({ navigation }) {
     let newTouched = {};
     Object.keys(touched).forEach((key) => {
       newTouched[key] = firstPage
-        ? !["password", "confirmPassword"].includes(key)
+        ? !["address", "password", "confirmPassword"].includes(key)
         : true;
     });
     settouched(newTouched);
@@ -157,7 +180,35 @@ function RegisterScreen({ navigation }) {
       } else {
         const { confirmPassword, ...rest } = state;
         console.log(rest);
-        await register(rest);
+        try {
+          setLoggingIn(true);
+          let response = await axios.post(url + "/auth/register", {
+            ...rest,
+            phone: rest.phone_number,
+            isAdmin: false,
+          });
+          if (response.data.success) {
+            navigation.navigate("Login");
+            if (Platform.OS === "android") {
+              ToastAndroid.show("Successfully Registered", ToastAndroid.SHORT);
+            } else {
+              Alert.alert("Successfully Registered");
+            }
+          } else {
+            Alert.alert(
+              "Registration failed",
+              "Please check your internet connection and try again"
+            );
+          }
+        } catch (error) {
+          console.log(error.message || error.response?.data);
+          Alert.alert(
+            "Error",
+            error?.response?.data?.error || "Something went wrong"
+          );
+        } finally {
+          setLoggingIn(false);
+        }
       }
     } else {
       readAllInputs();
@@ -172,31 +223,31 @@ function RegisterScreen({ navigation }) {
             <Text style={styles.heading}>Sign Up</Text>
 
             <Text style={styles.inputLabel}>Full Names</Text>
-            <View style={[styles.inputContainer, fullnameErrorStyles]}>
+            <View style={[styles.inputContainer, namesErrorStyles]}>
               <TextInput
                 style={styles.input}
                 placeholder="Enter Your Full Names"
-                value={fullname}
-                onChangeText={(value) => changeState("fullname", value)}
-                onBlur={() => touchInput("fullname")}
+                value={names}
+                onChangeText={(value) => changeState("names", value)}
+                onBlur={() => touchInput("names")}
               ></TextInput>
             </View>
-            {errors.fullname ? (
-              <Text style={styles.error}>{errors.fullname}</Text>
+            {errors.names ? (
+              <Text style={styles.error}>{errors.names}</Text>
             ) : null}
 
-            <Text style={styles.inputLabel}>Username</Text>
-            <View style={[styles.inputContainer, usernameErrorStyles]}>
+            <Text style={styles.inputLabel}>nationalId</Text>
+            <View style={[styles.inputContainer, nationalIdErrorStyles]}>
               <TextInput
                 style={styles.input}
-                placeholder="Enter Your Username"
-                value={username}
-                onChangeText={(value) => changeState("username", value)}
-                onBlur={() => touchInput("username")}
+                placeholder="Enter Your nationalId"
+                value={nationalId}
+                onChangeText={(value) => changeState("nationalId", value)}
+                onBlur={() => touchInput("nationalId")}
               ></TextInput>
             </View>
-            {errors.username ? (
-              <Text style={styles.error}>{errors.username}</Text>
+            {errors.nationalId ? (
+              <Text style={styles.error}>{errors.nationalId}</Text>
             ) : null}
 
             <Text style={styles.inputLabel}>Email address</Text>
@@ -229,6 +280,26 @@ function RegisterScreen({ navigation }) {
           </>
         ) : (
           <>
+            <TouchableOpacity
+              style={[styles.submit, styles.back]}
+              onPress={() => !loggingIn && setfirstPage(true)}
+            >
+              <Text style={styles.submitText}>{"Back"}</Text>
+            </TouchableOpacity>
+            <Text style={styles.inputLabel}>Address</Text>
+            <View style={[styles.inputContainer, addressErrorStyles]}>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your Address"
+                value={address}
+                onChangeText={(value) => changeState("address", value)}
+                onBlur={() => touchInput("address")}
+              ></TextInput>
+            </View>
+            {errors.address ? (
+              <Text style={styles.error}>{errors.address}</Text>
+            ) : null}
+
             <Text style={styles.inputLabel}>Password</Text>
             <View style={[styles.inputContainer, passwordErrorStyles]}>
               <TextInput
@@ -258,7 +329,7 @@ function RegisterScreen({ navigation }) {
             {errors.confirmPassword ? (
               <Text style={styles.error}>{errors.confirmPassword}</Text>
             ) : null}
-            <View style={{ marginBottom: "50%" }}></View>
+            <View style={{ marginBottom: "20%" }}></View>
           </>
         )}
 
@@ -337,10 +408,16 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     width: "100%",
     alignItems: "center",
-    marginTop: 40,
+    marginTop: 10,
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
+  },
+  back: {
+    width: "30%",
+    paddingVertical: 10,
+    marginTop: 10,
+    marginBottom: 20,
   },
   submitText: {
     color: "#ffffff",
