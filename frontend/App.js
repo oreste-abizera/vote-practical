@@ -52,6 +52,8 @@ export default function App() {
           options={{ headerShown: false }}
         ></Stack.Screen>
       </Stack.Navigator>
+
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
     </NavigationContainer>
   );
 }

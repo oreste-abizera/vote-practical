@@ -5,6 +5,7 @@ import {
   Image,
   Platform,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   ToastAndroid,
@@ -256,9 +257,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     position: "relative",
-    paddingTop: 50,
+    paddingTop: 30,
     paddingHorizontal: 10,
-    height: 100,
   },
   title: {
     fontWeight: "900",

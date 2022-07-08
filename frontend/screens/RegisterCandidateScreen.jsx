@@ -34,6 +34,14 @@ const RegisterCandidateScreen = ({ navigation }) => {
     setstate({ ...state, [key]: value });
   };
 
+  const clearAllInputs = () => {
+    let newState = {};
+    Object.keys(state).forEach((key) => {
+      newState[key] = "";
+    });
+    setstate(newState);
+  };
+
   const registerAsync = async () => {
     try {
       setCreating(true);
@@ -42,6 +50,7 @@ const RegisterCandidateScreen = ({ navigation }) => {
       });
       if (response.data.success) {
         setCreating(false);
+        clearAllInputs();
         navigation.navigate("Home");
         if (Platform.OS === "android") {
           ToastAndroid.show(
@@ -138,6 +147,7 @@ const RegisterCandidateScreen = ({ navigation }) => {
           {creating ? "Wait..." : "Register"}
         </Text>
       </TouchableOpacity>
+      <View style={{ height: 20 }}></View>
     </ScrollView>
   );
 };

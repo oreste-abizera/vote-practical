@@ -83,6 +83,19 @@ function LoginScreen({ navigation }) {
     settouched(newTouched);
   };
 
+  const clearAllInputs = () => {
+    let newTouched = {};
+    Object.keys(touched).forEach((key) => {
+      newTouched[key] = false;
+    });
+    settouched(newTouched);
+    let newState = {};
+    Object.keys(state).forEach((key) => {
+      newState[key] = "";
+    });
+    setstate(newState);
+  };
+
   const signInAsync = async () => {
     if (isEnabledSubmit) {
       const { password, email } = state;
@@ -94,6 +107,7 @@ function LoginScreen({ navigation }) {
         });
         if (response.data.success) {
           setLoggingIn(false);
+          clearAllInputs();
           await AsyncStorage.setItem("userToken", response.data.token);
           await AsyncStorage.setItem(
             "userData",
