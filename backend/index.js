@@ -7,6 +7,7 @@ const cors = require("cors");
 // import routes
 const authRoutes = require("./routes/auth.routes");
 const candidatesRoutes = require("./routes/candidates.routes");
+const votesRoutes = require("./routes/votes.routes");
 
 //Error Handler middleware
 const ErrorHandler = require("./middleware/error");
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/candidates", candidatesRoutes);
+app.use("/api/v1/votes", votesRoutes);
 
 app.use(ErrorHandler);
 
